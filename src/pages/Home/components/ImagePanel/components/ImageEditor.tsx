@@ -94,6 +94,7 @@ const ImageEditor: React.FC = () => {
         setBackgroundColor={setBackgroundColor}
         downloadImage={downloadImage}
         selectedElement={selectedElement}
+        setSelectedElement={setSelectedElement}
         setElements={setElements}
         elements={elements}
         setCanvasSize={(width, height) => setCanvasSize({ width, height })}

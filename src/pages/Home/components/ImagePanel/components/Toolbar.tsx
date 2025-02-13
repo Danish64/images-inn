@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import React from 'react';
 import { Element, fontFamilies } from './types';
@@ -27,6 +26,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
   setBackgroundColor,
   downloadImage,
   selectedElement,
+  setSelectedElement,
   setElements,
   elements,
   setCanvasSize,
@@ -53,6 +53,11 @@ const Toolbar: React.FC<ToolbarProps> = ({
 
   const handleColorChange = (id: string, color: string) => {
     setElements(elements.map((el) => (el.id === id ? { ...el, color } : el)));
+  };
+
+  const handleDelete = (id: string) => {
+    setElements(elements.filter((el) => el.id !== id));
+    setSelectedElement(null);
   };
 
   return (
@@ -138,6 +143,17 @@ const Toolbar: React.FC<ToolbarProps> = ({
         </Button>
       </div>
 
+      {selectedElement && (
+        <div className="mt-4">
+          <Button
+            onClick={() => handleDelete(selectedElement.id)}
+            className="my-2 w-full rounded border-black bg-red-500 p-2 text-white hover:bg-red-700"
+          >
+            Delete Element
+          </Button>
+        </div>
+      )}
+
       {selectedElement && selectedElement.type === 'text' && (
         <div className="mt-4">
           <h3 className="text-lg font-medium">Text Editor</h3>
@@ -147,10 +163,10 @@ const Toolbar: React.FC<ToolbarProps> = ({
             placeholder="Enter text"
             className="my-2 w-full"
           />
-          <Select
+          <select
             value={selectedElement.fontFamily || fontFamilies[0]}
-            onValueChange={(value) =>
-              handleFontFamilyChange(selectedElement.id, value)
+            onChange={(e) =>
+              handleFontFamilyChange(selectedElement.id, e.target.value)
             }
             className="my-2 w-full"
           >
@@ -159,7 +175,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
                 {font}
               </option>
             ))}
-          </Select>
+          </select>
           <Slider
             value={[selectedElement.fontSize || 16]}
             onValueChange={(value) =>

@@ -27,8 +27,10 @@ const CanvasEditor: React.FC<CanvasEditorProps> = ({
     );
   };
 
-  const handleDelete = (id: string) => {
-    setElements(elements.filter((el) => el.id !== id));
+  const handleTextChange = (id: string, newText: string) => {
+    setElements(
+      elements.map((el) => (el.id === id ? { ...el, content: newText } : el)),
+    );
   };
 
   return (
@@ -59,15 +61,20 @@ const CanvasEditor: React.FC<CanvasEditorProps> = ({
             onClick={() => setSelectedElement(element)}
           >
             {element.type === 'text' ? (
-              <div>
-                {element.content}
-                <button
-                  onClick={() => handleDelete(element.id)}
-                  className="ml-2 text-red-500"
-                >
-                  Delete
-                </button>
-              </div>
+              <input
+                type="text"
+                value={element.content}
+                onChange={(e) => handleTextChange(element.id, e.target.value)}
+                style={{
+                  fontSize: element.fontSize,
+                  fontFamily: element.fontFamily,
+                  color: element.color,
+                  background: 'transparent',
+                  border: 'none',
+                  outline: 'none',
+                  width: '100%',
+                }}
+              />
             ) : element.type === 'emoji' ? (
               <span style={{ fontSize: element.size }}>{element.content}</span>
             ) : element.type === 'line' ? (
@@ -93,12 +100,6 @@ const CanvasEditor: React.FC<CanvasEditorProps> = ({
                     }}
                   />
                 )}
-                <button
-                  onClick={() => handleDelete(element.id)}
-                  className="ml-2 text-red-500"
-                >
-                  Delete
-                </button>
               </div>
             ) : null}
           </div>
