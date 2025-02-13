@@ -1,12 +1,7 @@
-import './index.css';
+import Home from './pages/Home';
 
 function App() {
-  return (
-    <>
-      <div className="h-16 w-full"></div>
-      <h1 className="text-4xl font-bold">Images Inn App</h1>
-    </>
-  );
+  return <Home />;
 }
 
 export default App;
